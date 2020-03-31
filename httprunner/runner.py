@@ -1,3 +1,4 @@
+import os
 import uuid
 from enum import Enum
 from unittest.case import SkipTest
@@ -231,6 +232,10 @@ class Runner(object):
         if "HRUN-Request-ID" not in request_headers:
             parsed_test_request["headers"]["HRUN-Request-ID"] = \
                 self.session_context.session_variables_mapping["HRUN-Request-ID"]
+
+        if "X_Testing_Traffic" in os.environ:
+            x_testing_traffic = os.environ["X_Testing_Traffic"]
+            request_headers["X-Testing-Traffic"] = str(x_testing_traffic)
 
         try:
             method = parsed_test_request.pop('method')
